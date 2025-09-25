@@ -2,7 +2,7 @@ package use_case
 
 import mapper.toDomain
 import model.TrackDomain
-import tracks.remote.TracksRemoteDataSource
+import fr.ab_dev.data.tracks.remote.TracksRemoteDataSource
 
 class GetTrackListUseCaseImpl(
     private val tracksRemoteDataSource: TracksRemoteDataSource,

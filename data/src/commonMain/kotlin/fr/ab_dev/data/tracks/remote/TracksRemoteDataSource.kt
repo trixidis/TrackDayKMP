@@ -1,6 +1,6 @@
-package tracks.remote
+package fr.ab_dev.data.tracks.remote
 
-import model.TrackData
+import fr.ab_dev.data.model.TrackData
 
 interface TracksRemoteDataSource {
 

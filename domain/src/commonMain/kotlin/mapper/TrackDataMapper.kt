@@ -1,6 +1,6 @@
 package mapper
 
-import model.TrackData
+import fr.ab_dev.data.model.TrackData
 import model.TrackDomain
 
 fun TrackData.toDomain() = TrackDomain(
