@@ -2,10 +2,10 @@ package fr.ab_dev.data.di
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import fr.ab_dev.data.LocalProperties
-import fr.ab_dev.data.remote.TrackApi
-import fr.ab_dev.data.remote.createTrackApi
-import fr.ab_dev.data.tracks.remote.TrackRemoteDataSourceImpl
-import fr.ab_dev.data.tracks.remote.TracksRemoteDataSource
+import fr.ab_dev.data.remote.TrackDayApi
+import fr.ab_dev.data.remote.createTrackDayApi
+import fr.ab_dev.data.remote.TrackDayRemoteDataSourceImpl
+import fr.ab_dev.data.remote.TrackDayRemoteDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -13,9 +13,9 @@ import org.koin.dsl.module
 
 
 val tracksModule = module {
-    single<TracksRemoteDataSource> {
-        TrackRemoteDataSourceImpl(
-            trackApi = get(),
+    single<TrackDayRemoteDataSource> {
+        TrackDayRemoteDataSourceImpl(
+            api = get(),
         )
     }
 
@@ -34,8 +34,8 @@ val tracksModule = module {
             .build()
     }
 
-    single<TrackApi> {
-        get<Ktorfit>().createTrackApi()
+    single<TrackDayApi> {
+        get<Ktorfit>().createTrackDayApi()
     }
 
 

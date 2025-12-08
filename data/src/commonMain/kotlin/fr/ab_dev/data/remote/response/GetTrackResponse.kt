@@ -1,4 +1,4 @@
-package fr.ab_dev.data.tracks.remote.response
+package fr.ab_dev.data.remote.response
 
 import fr.ab_dev.data.model.TrackData
 import kotlinx.serialization.Serializable

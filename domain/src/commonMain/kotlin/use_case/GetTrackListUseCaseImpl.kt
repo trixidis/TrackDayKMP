@@ -2,10 +2,10 @@ package use_case
 
 import mapper.toDomain
 import model.TrackDomain
-import fr.ab_dev.data.tracks.remote.TracksRemoteDataSource
+import fr.ab_dev.data.remote.TrackDayRemoteDataSource
 
 class GetTrackListUseCaseImpl(
-    private val tracksRemoteDataSource: TracksRemoteDataSource,
+    private val trackDayRemoteDataSource: TrackDayRemoteDataSource,
 ) : GetTrackListUseCase {
-    override suspend fun invoke(): List<TrackDomain> = tracksRemoteDataSource.getTracks().toDomain()
+    override suspend fun invoke(): List<TrackDomain> = trackDayRemoteDataSource.getTracks().toDomain()
 }
