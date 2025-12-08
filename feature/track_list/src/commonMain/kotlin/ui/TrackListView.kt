@@ -1,26 +1,26 @@
 package ui
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import model.TrackPresentation
 import org.jetbrains.compose.resources.stringResource
@@ -31,89 +31,93 @@ import trackday.feature.track_list.generated.resources.no_track_to_display
 import vm.TrackListViewModel
 
 @Composable
-fun TrackListView() {
+fun TrackListView(padding: PaddingValues) {
     if (LocalInspectionMode.current) {
-        Scaffold { padding ->
-            Text("test", modifier = Modifier.padding(padding))
-        }
+        TrackListPreview()
     } else {
-        TrackListViewWithViewModel()
+        TrackListViewWithViewModel(padding = padding)
     }
 }
 
 @Composable
 fun TrackListViewWithViewModel(
+    padding: PaddingValues,
     vm: TrackListViewModel = koinViewModel<TrackListViewModel>()
 ) {
 
     val state = vm.uiState.collectAsStateWithLifecycle()
 
     if (state.value.error != null) {
-        NoTrackToDisplayView()
+        NoTrackToDisplayView(padding)
     } else {
         state.value.tracks.let { trackList ->
-            TrackList(trackList)
+            TrackList(padding, trackList)
         }
     }
 
 }
 
 @Composable
-fun NoTrackToDisplayView() {
-    Scaffold { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                modifier = Modifier.padding(paddingValues),
-                text = stringResource(Res.string.no_track_to_display)
-            )
-        }
+fun NoTrackToDisplayView(padding: PaddingValues) {
+    Box(
+        modifier = Modifier
+            .padding(padding)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(padding),
+            text = stringResource(Res.string.no_track_to_display)
+        )
     }
+
 }
 
 @Composable
 private fun TrackList(
+    padding: PaddingValues,
     trackList: List<TrackPresentation>,
 ) {
-    Scaffold { padding ->
-        if (trackList.isNotEmpty()) {
-            LazyColumn(modifier = Modifier.padding(padding)) {
-                items(trackList) { track ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(32.dp)
+    if (trackList.isNotEmpty()) {
+        LazyVerticalGrid(
+            modifier = Modifier.padding(padding),
+            columns = GridCells.Fixed(3),
+            contentPadding = PaddingValues(all = 12.dp)
+        ) {
+            items(trackList) { track ->
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .padding(vertical = 26.dp)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            AsyncImage(
-                                modifier = Modifier.height(60.dp),
-                                model = track.imgUrl,
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = track.name,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            model = track.imgUrl,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = track.name,
+                            textAlign = TextAlign.Center,
+                        )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
     }
 }
 
+
 @Preview
 @Composable
 fun TrackListPreview() {
     TrackList(
+        PaddingValues(all = 1.dp),
         listOf(
             TrackPresentation(
                 name = "Ales",
@@ -126,5 +130,5 @@ fun TrackListPreview() {
 @Preview
 @Composable
 fun NoTrackPreview() {
-    NoTrackToDisplayView()
+    NoTrackToDisplayView(PaddingValues(all = 1.dp))
 }

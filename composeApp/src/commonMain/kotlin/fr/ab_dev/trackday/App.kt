@@ -23,10 +23,10 @@ fun App() {
             bottomBar =
                 {
                     BottomNavBar()
-                }) {
+                }) { paddingValues ->
             when (featureSelected) {
                 BottomNavBarFeature.Organisers -> Box {} //TODO : Add organisers feature here
-                BottomNavBarFeature.Tracks -> TrackListView()
+                BottomNavBarFeature.Tracks -> TrackListView(paddingValues)
             }
 
         }
