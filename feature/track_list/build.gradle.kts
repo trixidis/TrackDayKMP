@@ -51,6 +51,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
             implementation(projects.domain)
+            implementation(projects.ui.core)
         }
     }
 }

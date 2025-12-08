@@ -1,9 +1,12 @@
 package ui
 
+import SharedSearchBar
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,9 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -73,38 +80,76 @@ fun NoTrackToDisplayView(padding: PaddingValues) {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TrackList(
     padding: PaddingValues,
     trackList: List<TrackPresentation>,
 ) {
+
+    val filteredTracks = remember(trackList) { mutableStateOf(trackList) }
+
+
     if (trackList.isNotEmpty()) {
-        LazyVerticalGrid(
-            modifier = Modifier.padding(padding),
-            columns = GridCells.Fixed(3),
-            contentPadding = PaddingValues(all = 12.dp)
-        ) {
-            items(trackList) { track ->
-                Card(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                        .padding(vertical = 26.dp)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+        val textFieldState = TextFieldState()
+        val searchResults = remember {
+            mutableStateOf(trackList.map { it.name })
+        }
+        val onSearch: (String) -> Unit = { value ->
+            searchResults.value =
+                trackList.filter { result ->
+                    result.name.lowercase()
+                        .contains(value.lowercase())
+                }.map { result ->
+                    result.name
+                }
+
+            filteredTracks.value = trackList.filter { it.name.lowercase().contains(value.lowercase()) }
+        }
+
+
+        Column {
+            SharedSearchBar(
+                textFieldState = textFieldState,
+                searchResults = searchResults.value,
+                onSearch = onSearch,
+                onResultSelected = {result ->
+                    filteredTracks.value = trackList.filter { it.name.lowercase().contains(result.lowercase()) }
+                }
+
+            )
+            LazyVerticalGrid(
+                modifier = Modifier.padding(padding),
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(all = 12.dp)
+            ) {
+                items(filteredTracks.value) { track ->
+                    Card(
+                        modifier = Modifier
+                            .aspectRatio(0.5f)
+                            .padding(horizontal = 12.dp)
+                            .padding(vertical = 26.dp)
                     ) {
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            model = track.imgUrl,
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = track.name,
-                            textAlign = TextAlign.Center,
-                        )
+                        Column(
+                            modifier =Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                model = track.imgUrl,
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = track.name,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                 }
             }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -94,15 +95,18 @@ private fun OrganiserList(
                 items(organiserList) { organiser ->
                     Card(
                         modifier = Modifier
+                            .aspectRatio(0.75f)
                             .padding(horizontal = 12.dp)
                             .padding(vertical = 26.dp)
                     ) {
                         Column(
+                            modifier =Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             AsyncImage(
                                 modifier = Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .weight(1f),
                                 model = organiser.imgUrl,
                                 contentScale = ContentScale.Crop,
                                 contentDescription = null
