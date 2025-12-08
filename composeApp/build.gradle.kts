@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -51,6 +49,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(projects.ui.core)
             implementation(projects.feature.trackList)
+            implementation(projects.feature.navigation)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)

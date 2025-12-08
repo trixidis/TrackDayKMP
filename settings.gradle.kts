@@ -32,5 +32,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":ui:core")
 include(":feature:track_list")
+include(":feature:navigation")
 include(":domain")
 include(":data")

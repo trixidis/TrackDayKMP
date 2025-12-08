@@ -42,6 +42,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 #Coil
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
 
 #Koin
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
