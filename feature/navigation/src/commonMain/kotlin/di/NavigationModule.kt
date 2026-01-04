@@ -14,4 +14,5 @@ val navigationModule = module {
     single<NavigationStore> {
         NavigationStore()
     }
+
 }

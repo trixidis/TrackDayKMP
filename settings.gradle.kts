@@ -25,6 +25,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         mavenLocal()
     }
 }
@@ -32,6 +33,7 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":ui:core")
 include(":feature:track_list")
+include(":feature:track_detail")
 include(":feature:navigation")
 include(":feature:organiser_list")
 include(":domain")

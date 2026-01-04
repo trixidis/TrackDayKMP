@@ -38,17 +38,24 @@ import trackday.feature.track_list.generated.resources.no_track_to_display
 import vm.TrackListViewModel
 
 @Composable
-fun TrackListView(padding: PaddingValues) {
+fun TrackListView(
+    padding: PaddingValues,
+    onNavigateToDetail: (String) -> Unit = {}
+) {
     if (LocalInspectionMode.current) {
         TrackListPreview()
     } else {
-        TrackListViewWithViewModel(padding = padding)
+        TrackListViewWithViewModel(
+            padding = padding,
+            onNavigateToDetail = onNavigateToDetail
+        )
     }
 }
 
 @Composable
 fun TrackListViewWithViewModel(
     padding: PaddingValues,
+    onNavigateToDetail: (String) -> Unit,
     vm: TrackListViewModel = koinViewModel<TrackListViewModel>()
 ) {
 
@@ -58,7 +65,11 @@ fun TrackListViewWithViewModel(
         NoTrackToDisplayView(padding)
     } else {
         state.value.tracks.let { trackList ->
-            TrackList(padding, trackList)
+            TrackList(
+                padding = padding,
+                trackList = trackList,
+                onNavigateToDetail = onNavigateToDetail
+            )
         }
     }
 
@@ -85,6 +96,7 @@ fun NoTrackToDisplayView(padding: PaddingValues) {
 private fun TrackList(
     padding: PaddingValues,
     trackList: List<TrackPresentation>,
+    onNavigateToDetail: (String) -> Unit = {},
 ) {
 
     val filteredTracks = remember(trackList) { mutableStateOf(trackList) }
@@ -126,6 +138,7 @@ private fun TrackList(
             ) {
                 items(filteredTracks.value) { track ->
                     Card(
+                        onClick = { onNavigateToDetail(track.name) },
                         modifier = Modifier
                             .aspectRatio(0.5f)
                             .padding(horizontal = 12.dp)

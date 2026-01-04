@@ -7,10 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import model.BottomNavBarFeature
 import model.NavigationStore
+import navigation.TracksNavigationContainer
 import org.koin.compose.koinInject
 import ui.BottomNavBar
 import ui.OrganiserListView
-import ui.TrackListView
 
 @Composable
 fun App() {
@@ -19,15 +19,16 @@ fun App() {
 
     MaterialTheme {
         Scaffold(
-            bottomBar =
-                {
-                    BottomNavBar()
-                }) { paddingValues ->
+            bottomBar = { BottomNavBar() }
+        ) { paddingValues ->
             when (featureSelected) {
                 BottomNavBarFeature.Organisers -> OrganiserListView(paddingValues)
-                BottomNavBarFeature.Tracks -> TrackListView(paddingValues)
+                BottomNavBarFeature.Tracks -> {
+                    TracksNavigationContainer(
+                        paddingValues = paddingValues
+                    )
+                }
             }
-
         }
     }
 }

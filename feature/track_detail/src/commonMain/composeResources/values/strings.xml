@@ -1,0 +1,4 @@
+<resources>
+    <string name="error_placeholder">Error : %s</string>
+    <string name="track_details_title">Track Details</string>
+</resources>
