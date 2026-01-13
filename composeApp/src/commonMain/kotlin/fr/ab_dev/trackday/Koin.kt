@@ -7,11 +7,12 @@ import di.initTrackListFeature
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
     startKoin {
         appDeclaration()
-        initTrackListFeature()
-        initTrackDetailFeature()
-        initNavigationFeature()
-        initOrganiserListFeature()
     }
+    initTrackListFeature()
+    initTrackDetailFeature()
+    initNavigationFeature()
+    initOrganiserListFeature()
+}
