@@ -1,13 +1,45 @@
 package use_case
 
+import dev.mokkery.answering.returns
+import dev.mokkery.everySuspend
+import dev.mokkery.mock
+import di.domainModules
 import kotlinx.coroutines.test.runTest
 import model.OrganiserDomain
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import repository.OrganiserRepository
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class GetOrganisersUseCaseImplTest {
+class GetOrganisersUseCaseImplTest : KoinTest {
+
+    private val useCase: GetOrganisersUseCase by inject()
+    private val mockRepository: OrganiserRepository = mock()
+
+    @BeforeTest
+    fun setUp() {
+        startKoin {
+            modules(
+                domainModules,
+                module {
+                    single<OrganiserRepository> { mockRepository }
+                }
+            )
+        }
+    }
+
+    @AfterTest
+    fun tearDown() {
+        stopKoin()
+    }
+
     @Test
     fun `invoke returns list of organisers from repository`() =
         runTest {
@@ -20,8 +52,7 @@ class GetOrganisersUseCaseImplTest {
                         imgUrl = "https://example.com/sportauto.png"
                     ),
                 )
-            val fakeRepository = FakeOrganiserRepository(expectedOrganisers)
-            val useCase = GetOrganisersUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getOrganisers() } returns expectedOrganisers
 
             val result = useCase()
 
@@ -31,8 +62,7 @@ class GetOrganisersUseCaseImplTest {
     @Test
     fun `invoke returns empty list when repository has no organisers`() =
         runTest {
-            val fakeRepository = FakeOrganiserRepository(emptyList())
-            val useCase = GetOrganisersUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getOrganisers() } returns emptyList()
 
             val result = useCase()
 
@@ -46,8 +76,7 @@ class GetOrganisersUseCaseImplTest {
                 listOf(
                     OrganiserDomain(name = "Track Days", country = "UK", imgUrl = "https://example.com/trackdays.png"),
                 )
-            val fakeRepository = FakeOrganiserRepository(singleOrganiser)
-            val useCase = GetOrganisersUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getOrganisers() } returns singleOrganiser
 
             val result = useCase()
 
@@ -55,10 +84,4 @@ class GetOrganisersUseCaseImplTest {
             assertEquals("Track Days", result.first().name)
             assertEquals("UK", result.first().country)
         }
-}
-
-private class FakeOrganiserRepository(
-    private val organisers: List<OrganiserDomain>,
-) : OrganiserRepository {
-    override suspend fun getOrganisers(): List<OrganiserDomain> = organisers
 }

@@ -1,13 +1,44 @@
 package use_case
 
+import dev.mokkery.answering.returns
+import dev.mokkery.everySuspend
+import dev.mokkery.mock
+import di.domainModules
 import kotlinx.coroutines.test.runTest
 import model.TrackDomain
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import repository.TrackRepository
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class GetTrackListUseCaseImplTest {
+class GetTrackListUseCaseImplTest : KoinTest {
+
+    private val useCase: GetTrackListUseCase by inject()
+    private val mockRepository: TrackRepository = mock()
+
+    @BeforeTest
+    fun setUp() {
+        startKoin {
+            modules(
+                domainModules,
+                module {
+                    single<TrackRepository> { mockRepository }
+                }
+            )
+        }
+    }
+
+    @AfterTest
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun `invoke returns list of tracks from repository`() =
@@ -25,8 +56,7 @@ class GetTrackListUseCaseImplTest {
                         imgUrl = "https://example.com/nurburgring.png"
                     ),
                 )
-            val fakeRepository = FakeTrackRepository(expectedTracks)
-            val useCase = GetTrackListUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getTracks() } returns expectedTracks
 
             val result = useCase()
 
@@ -36,8 +66,7 @@ class GetTrackListUseCaseImplTest {
     @Test
     fun `invoke returns empty list when repository has no tracks`() =
         runTest {
-            val fakeRepository = FakeTrackRepository(emptyList())
-            val useCase = GetTrackListUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getTracks() } returns emptyList()
 
             val result = useCase()
 
@@ -51,8 +80,7 @@ class GetTrackListUseCaseImplTest {
                 listOf(
                     TrackDomain(name = "Monza", country = "Italy", imgUrl = "https://example.com/monza.png"),
                 )
-            val fakeRepository = FakeTrackRepository(singleTrack)
-            val useCase = GetTrackListUseCaseImpl(fakeRepository)
+            everySuspend { mockRepository.getTracks() } returns singleTrack
 
             val result = useCase()
 
@@ -60,10 +88,4 @@ class GetTrackListUseCaseImplTest {
             assertEquals("Monza", result.first().name)
             assertEquals("Italy", result.first().country)
         }
-}
-
-private class FakeTrackRepository(
-    private val tracks: List<TrackDomain>,
-) : TrackRepository {
-    override suspend fun getTracks(): List<TrackDomain> = tracks
 }
