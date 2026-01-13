@@ -6,9 +6,7 @@ import fr.ab_dev.data.model.TrackData
 class TrackDayRemoteDataSourceImpl(
     val api: TrackDayApi
 ) : TrackDayRemoteDataSource {
-    override suspend fun getTracks(): List<TrackData> =
-        api.getTracks().tracks
+    override suspend fun getTracks(): List<TrackData> = api.getTracks().tracks
 
-    override suspend fun getOrganisers(): List<Organiser> =
-        api.getOrganisers().organisers
+    override suspend fun getOrganisers(): List<Organiser> = api.getOrganisers().organisers
 }

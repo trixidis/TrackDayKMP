@@ -2,7 +2,6 @@ package fr.ab_dev.data.model
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class Organiser(
     val id: String,

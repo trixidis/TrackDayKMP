@@ -6,8 +6,8 @@ import fr.ab_dev.data.remote.response.GetTrackResponse
 
 interface TrackDayApi {
     @GET("tracks")
-    suspend fun getTracks() : GetTrackResponse
+    suspend fun getTracks(): GetTrackResponse
 
     @GET("org")
-    suspend fun getOrganisers() : GetOrganiserResponse
+    suspend fun getOrganisers(): GetOrganiserResponse
 }

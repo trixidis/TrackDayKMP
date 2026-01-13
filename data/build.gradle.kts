@@ -8,6 +8,10 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+ktorfit {
+    compilerPluginVersion.set("2.3.3")
+}
+
 kotlin {
     androidTarget {
         compilerOptions {
@@ -29,7 +33,6 @@ kotlin {
         val commonMain by getting {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             kotlin.srcDir("$buildDir/generated/localProperties")
-
         }
         androidMain.dependencies {
             implementation(libs.kotlinx.coroutines.android)
@@ -37,6 +40,7 @@ kotlin {
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(project(":domain"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -46,8 +50,11 @@ kotlin {
             implementation(libs.content.negotiation)
             implementation(libs.kotlinx.json)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
-
 }
 
 dependencies {
@@ -59,12 +66,16 @@ dependencies {
 
 android {
     namespace = "fr.ab_dev.trackday.data"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
     packaging {
         resources {
