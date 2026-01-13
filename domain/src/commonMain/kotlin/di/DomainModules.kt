@@ -6,12 +6,13 @@ import use_case.GetOrganisersUseCaseImpl
 import use_case.GetTrackListUseCase
 import use_case.GetTrackListUseCaseImpl
 
-val domainModules = module {
-    factory<GetTrackListUseCase> {
-        GetTrackListUseCaseImpl(trackDayRemoteDataSource = get())
-    }
+val domainModules =
+    module {
+        factory<GetTrackListUseCase> {
+            GetTrackListUseCaseImpl(trackRepository = get())
+        }
 
-    factory<GetOrganisersUseCase> {
-        GetOrganisersUseCaseImpl(trackDayRemoteDataSource = get())
+        factory<GetOrganisersUseCase> {
+            GetOrganisersUseCaseImpl(organiserRepository = get())
+        }
     }
-}

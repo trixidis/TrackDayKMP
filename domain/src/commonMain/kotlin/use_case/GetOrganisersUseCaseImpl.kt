@@ -1,13 +1,10 @@
 package use_case
 
-import fr.ab_dev.data.remote.TrackDayRemoteDataSource
-import mapper.toDomain
 import model.OrganiserDomain
+import repository.OrganiserRepository
 
 class GetOrganisersUseCaseImpl(
-    private val trackDayRemoteDataSource: TrackDayRemoteDataSource
-)
-    : GetOrganisersUseCase{
-    override suspend fun invoke(): List<OrganiserDomain> =
-        trackDayRemoteDataSource.getOrganisers().toDomain()
+    private val organiserRepository: OrganiserRepository
+) : GetOrganisersUseCase {
+    override suspend fun invoke(): List<OrganiserDomain> = organiserRepository.getOrganisers()
 }
