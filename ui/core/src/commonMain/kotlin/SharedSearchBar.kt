@@ -36,9 +36,10 @@ fun SharedSearchBar(
             .semantics { isTraversalGroup = true }
     ) {
         SearchBar(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .semantics { traversalIndex = 0f },
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .semantics { traversalIndex = 0f },
             inputField = {
                 SearchBarDefaults.InputField(
                     query = textFieldState.text.toString(),
@@ -60,13 +61,13 @@ fun SharedSearchBar(
                 searchResults.forEach { result ->
                     ListItem(
                         headlineContent = { Text(result) },
-                        modifier = Modifier
-                            .clickable {
-                                textFieldState.edit { replace(0, length, result) }
-                                expanded = false
-                                onResultSelected(result)
-                            }
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .clickable {
+                                    textFieldState.edit { replace(0, length, result) }
+                                    expanded = false
+                                    onResultSelected(result)
+                                }.fillMaxWidth()
                     )
                 }
             }
