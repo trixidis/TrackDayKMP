@@ -51,16 +51,23 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
             implementation(projects.domain)
+            implementation(projects.di)
         }
     }
 }
 
 android {
     namespace = "fr.ab_dev.trackday.feature.organiser_list"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
     packaging {
         resources {
@@ -81,4 +88,3 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-

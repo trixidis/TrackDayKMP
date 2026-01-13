@@ -33,7 +33,6 @@ import trackday.feature.organiser_list.generated.resources.Res
 import trackday.feature.organiser_list.generated.resources.no_organiser_to_display
 import vm.OrganiserListViewModel
 
-
 @Composable
 fun OrganiserListView(padding: PaddingValues) {
     if (LocalInspectionMode.current) {
@@ -48,7 +47,6 @@ fun OrganiserListViewWithViewModel(
     padding: PaddingValues,
     vm: OrganiserListViewModel = koinViewModel<OrganiserListViewModel>()
 ) {
-
     val state by vm.uiState.collectAsStateWithLifecycle()
 
     if (state.error != null) {
@@ -58,15 +56,15 @@ fun OrganiserListViewWithViewModel(
             OrganiserList(padding, organiserList)
         }
     }
-
 }
 
 @Composable
 fun NoOrganiserToDisplayView(padding: PaddingValues) {
     Box(
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .padding(padding)
+                .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -74,7 +72,6 @@ fun NoOrganiserToDisplayView(padding: PaddingValues) {
             text = stringResource(Res.string.no_organiser_to_display)
         )
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,9 +80,7 @@ private fun OrganiserList(
     padding: PaddingValues,
     organiserList: List<OrganiserUi>,
 ) {
-
     if (organiserList.isNotEmpty()) {
-
         Column {
             LazyVerticalGrid(
                 modifier = Modifier.padding(padding),
@@ -94,19 +89,21 @@ private fun OrganiserList(
             ) {
                 items(organiserList) { organiser ->
                     Card(
-                        modifier = Modifier
-                            .aspectRatio(0.75f)
-                            .padding(horizontal = 12.dp)
-                            .padding(vertical = 26.dp)
+                        modifier =
+                            Modifier
+                                .aspectRatio(0.75f)
+                                .padding(horizontal = 12.dp)
+                                .padding(vertical = 26.dp)
                     ) {
                         Column(
-                            modifier =Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             AsyncImage(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
                                 model = organiser.imgUrl,
                                 contentScale = ContentScale.Crop,
                                 contentDescription = null
@@ -123,7 +120,6 @@ private fun OrganiserList(
         }
     }
 }
-
 
 @Preview
 @Composable

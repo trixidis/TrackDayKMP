@@ -1,6 +1,6 @@
 package model
 
-data class OrganiserUi (
+data class OrganiserUi(
     val name: String,
     val imgUrl: String,
 )

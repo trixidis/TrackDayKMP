@@ -1,6 +1,6 @@
 package model
 
 data class OrganiserListState(
-    val organisers : List<OrganiserUi>,
-    val error : Throwable?
+    val organisers: List<OrganiserUi>,
+    val error: Throwable?
 )

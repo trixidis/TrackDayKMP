@@ -12,13 +12,13 @@ import use_case.GetOrganisersUseCase
 class OrganiserListViewModel(
     private val getOrganisersUseCase: GetOrganisersUseCase
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(
-        OrganiserListState(
-            organisers = emptyList(),
-            error = null
+    private val _uiState =
+        MutableStateFlow(
+            OrganiserListState(
+                organisers = emptyList(),
+                error = null
+            )
         )
-    )
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -30,19 +30,19 @@ class OrganiserListViewModel(
             runCatching {
                 getOrganisersUseCase()
             }.onSuccess { organisers ->
-                _uiState.value = _uiState.value.copy(
-                    organisers = organisers.map { organiserDomain ->
-                        organiserDomain.toPresentation()
-                    }
-                )
-
+                _uiState.value =
+                    _uiState.value.copy(
+                        organisers =
+                            organisers.map { organiserDomain ->
+                                organiserDomain.toPresentation()
+                            }
+                    )
             }.onFailure { error ->
-                _uiState.value = _uiState.value.copy(
-                    error = error
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = error
+                    )
             }
-
         }
-
     }
 }
