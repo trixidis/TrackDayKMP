@@ -14,7 +14,6 @@ class TrackDetailViewModel(
     private val trackName: String,
     private val getTrackListUseCase: GetTrackListUseCase,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(TrackDetailState())
     val uiState: StateFlow<TrackDetailState> = _uiState.asStateFlow()
 
@@ -29,15 +28,17 @@ class TrackDetailViewModel(
                 getTrackListUseCase()
             }.onSuccess { tracks ->
                 val track = tracks.find { it.name == trackName }
-                _uiState.value = _uiState.value.copy(
-                    track = track?.toDetailPresentation(),
-                    isLoading = false
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        track = track?.toDetailPresentation(),
+                        isLoading = false
+                    )
             }.onFailure { error ->
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = error
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        error = error
+                    )
             }
         }
     }

@@ -90,7 +90,6 @@ fun TrackDetailViewWithViewModel(
                     TrackDetailContent(padding, track)
                 }
             }
-
         }
     }
 }
@@ -98,9 +97,10 @@ fun TrackDetailViewWithViewModel(
 @Composable
 fun LoadingView(padding: PaddingValues) {
     Box(
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .padding(padding)
+                .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
@@ -110,11 +110,15 @@ fun LoadingView(padding: PaddingValues) {
 }
 
 @Composable
-fun ErrorView(padding: PaddingValues, errorMessage: String) {
+fun ErrorView(
+    padding: PaddingValues,
+    errorMessage: String
+) {
     Box(
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .padding(padding)
+                .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -130,18 +134,20 @@ fun TrackDetailContent(
     track: TrackDetailPresentation
 ) {
     Column(
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Track Image
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
         ) {
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
@@ -160,14 +166,16 @@ fun TrackDetailContent(
 
         // Country
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
@@ -192,11 +200,12 @@ fun TrackDetailContent(
 fun TrackDetailPreview() {
     TrackDetailContent(
         padding = PaddingValues(all = 16.dp),
-        track = TrackDetailPresentation(
-            name = "Silverstone Circuit",
-            country = "United Kingdom",
-            imgUrl = ""
-        )
+        track =
+            TrackDetailPresentation(
+                name = "Silverstone Circuit",
+                country = "United Kingdom",
+                imgUrl = ""
+            )
     )
 }
 
