@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface Route : NavKey {
-
     @Serializable
     data object OrganiserList : Route, NavKey
 
@@ -14,5 +13,4 @@ sealed interface Route : NavKey {
 
     @Serializable
     data class TrackDetail(val trackName: String) : Route, NavKey
-
 }

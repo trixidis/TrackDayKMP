@@ -6,5 +6,6 @@ data class BottomNavBarState(
 
 sealed class BottomNavBarFeature {
     data object Tracks : BottomNavBarFeature()
+
     data object Organisers : BottomNavBarFeature()
 }

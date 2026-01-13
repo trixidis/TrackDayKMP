@@ -18,11 +18,8 @@ import org.koin.compose.viewmodel.koinViewModel
 import trackday.feature.navigation.generated.resources.Res
 import vm.BottomNavBarViewModel
 
-
 @Composable
-fun BottomNavBar(
-    modifier: Modifier = Modifier
-) {
+fun BottomNavBar(modifier: Modifier = Modifier) {
     if (LocalInspectionMode.current) {
         BottomNavBar(
             modifier = modifier,
@@ -36,7 +33,6 @@ fun BottomNavBar(
     }
 }
 
-
 @Composable
 private fun BottomNavBarWithVm(
     modifier: Modifier = Modifier,
@@ -44,16 +40,16 @@ private fun BottomNavBarWithVm(
 ) {
     val state by vm.uiState.collectAsStateWithLifecycle()
 
-    val actionHandler = object : ActionsHandler {
-        override fun onTrackSelected() {
-            vm.onTrackSelected()
-        }
+    val actionHandler =
+        object : ActionsHandler {
+            override fun onTrackSelected() {
+                vm.onTrackSelected()
+            }
 
-        override fun onOrganisersSelected() {
-            vm.onOrganisersSelected()
+            override fun onOrganisersSelected() {
+                vm.onOrganisersSelected()
+            }
         }
-
-    }
 
     val isTrackSelected by remember {
         derivedStateOf {
@@ -112,6 +108,7 @@ private fun BottomNavBar(
 
 private interface ActionsHandler {
     fun onTrackSelected()
+
     fun onOrganisersSelected()
 }
 

@@ -16,29 +16,29 @@ import ui.TrackDetailView
 import ui.TrackListView
 
 @Composable
-fun TracksNavigationContainer(
-    paddingValues: PaddingValues,
-) {
-
-    val backStack = rememberNavBackStack(
-        configuration = SavedStateConfiguration {
-            serializersModule = SerializersModule {
-                polymorphic(NavKey::class) {
-                    subclass(Route.TrackDetail::class, Route.TrackDetail.serializer())
-                    subclass(Route.TrackList::class, Route.TrackList.serializer())
-
-                }
-            }
-        },
-        Route.TrackList
-    )
+fun TracksNavigationContainer(paddingValues: PaddingValues,) {
+    val backStack =
+        rememberNavBackStack(
+            configuration =
+                SavedStateConfiguration {
+                    serializersModule =
+                        SerializersModule {
+                            polymorphic(NavKey::class) {
+                                subclass(Route.TrackDetail::class, Route.TrackDetail.serializer())
+                                subclass(Route.TrackList::class, Route.TrackList.serializer())
+                            }
+                        }
+                },
+            Route.TrackList
+        )
 
     NavDisplay(
         backStack = backStack,
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator ()
-        ),
+        entryDecorators =
+            listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
+            ),
         entryProvider = { key ->
             when (key) {
                 is Route.TrackList -> {

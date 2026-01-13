@@ -20,12 +20,13 @@ class BottomNavBarViewModel(
         navigationStore.select(BottomNavBarFeature.Organisers)
     }
 
-    val uiState = navigationStore.feature.map { feature ->
-        BottomNavBarState(featureSelected = feature)
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        BottomNavBarState(BottomNavBarFeature.Tracks)
-    )
-
+    val uiState =
+        navigationStore.feature
+            .map { feature ->
+                BottomNavBarState(featureSelected = feature)
+            }.stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                BottomNavBarState(BottomNavBarFeature.Tracks)
+            )
 }

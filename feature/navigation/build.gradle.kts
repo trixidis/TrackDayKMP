@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
             implementation(projects.domain)
+            implementation(projects.di)
             implementation(libs.jetbrains.navigation3.ui)
             implementation(libs.jetbrains.lifecycle.viewmodel.nav3)
             implementation(libs.serialization.json)
@@ -63,10 +64,16 @@ kotlin {
 
 android {
     namespace = "fr.ab_dev.trackday.feature.track_list"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
     packaging {
         resources {
@@ -87,4 +94,3 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
