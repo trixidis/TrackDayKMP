@@ -13,7 +13,6 @@ import use_case.GetTrackListUseCase
 class TrackListViewModel(
     private val getTrackListUseCase: GetTrackListUseCase,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(TrackListState(emptyList(), null))
     val uiState: StateFlow<TrackListState> = _uiState.asStateFlow()
 
@@ -26,21 +25,19 @@ class TrackListViewModel(
             runCatching {
                 getTrackListUseCase()
             }.onSuccess { tracks ->
-                _uiState.value = _uiState.value.copy(
-                    tracks = tracks.map { trackDomain ->
-                        trackDomain.toPresentation()
-                    }
-                )
-
+                _uiState.value =
+                    _uiState.value.copy(
+                        tracks =
+                            tracks.map { trackDomain ->
+                                trackDomain.toPresentation()
+                            }
+                    )
             }.onFailure { error ->
-                _uiState.value = _uiState.value.copy(
-                    error = error
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = error
+                    )
             }
-
         }
-
     }
-
-
 }

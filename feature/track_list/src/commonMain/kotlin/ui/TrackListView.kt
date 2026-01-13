@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -58,7 +59,6 @@ fun TrackListViewWithViewModel(
     onNavigateToDetail: (String) -> Unit,
     vm: TrackListViewModel = koinViewModel<TrackListViewModel>()
 ) {
-
     val state = vm.uiState.collectAsStateWithLifecycle()
 
     if (state.value.error != null) {
@@ -72,15 +72,15 @@ fun TrackListViewWithViewModel(
             )
         }
     }
-
 }
 
 @Composable
 fun NoTrackToDisplayView(padding: PaddingValues) {
     Box(
-        modifier = Modifier
-            .padding(padding)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .padding(padding)
+                .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -88,48 +88,46 @@ fun NoTrackToDisplayView(padding: PaddingValues) {
             text = stringResource(Res.string.no_track_to_display)
         )
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Stable
 @Composable
 private fun TrackList(
     padding: PaddingValues,
     trackList: List<TrackPresentation>,
     onNavigateToDetail: (String) -> Unit = {},
 ) {
-
     val filteredTracks = remember(trackList) { mutableStateOf(trackList) }
 
-
     if (trackList.isNotEmpty()) {
-
         val textFieldState = TextFieldState()
-        val searchResults = remember {
-            mutableStateOf(trackList.map { it.name })
-        }
+        val searchResults =
+            remember {
+                mutableStateOf(trackList.map { it.name })
+            }
         val onSearch: (String) -> Unit = { value ->
             searchResults.value =
-                trackList.filter { result ->
-                    result.name.lowercase()
-                        .contains(value.lowercase())
-                }.map { result ->
-                    result.name
-                }
+                trackList
+                    .filter { result ->
+                        result.name
+                            .lowercase()
+                            .contains(value.lowercase())
+                    }.map { result ->
+                        result.name
+                    }
 
             filteredTracks.value = trackList.filter { it.name.lowercase().contains(value.lowercase()) }
         }
-
 
         Column {
             SharedSearchBar(
                 textFieldState = textFieldState,
                 searchResults = searchResults.value,
                 onSearch = onSearch,
-                onResultSelected = {result ->
+                onResultSelected = { result ->
                     filteredTracks.value = trackList.filter { it.name.lowercase().contains(result.lowercase()) }
                 }
-
             )
             LazyVerticalGrid(
                 modifier = Modifier.padding(padding),
@@ -139,20 +137,22 @@ private fun TrackList(
                 items(filteredTracks.value) { track ->
                     Card(
                         onClick = { onNavigateToDetail(track.name) },
-                        modifier = Modifier
-                            .aspectRatio(0.5f)
-                            .padding(horizontal = 12.dp)
-                            .padding(vertical = 26.dp)
+                        modifier =
+                            Modifier
+                                .aspectRatio(0.5f)
+                                .padding(horizontal = 12.dp)
+                                .padding(vertical = 26.dp)
                     ) {
                         Column(
-                            modifier =Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.SpaceBetween
                         ) {
                             AsyncImage(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
                                 model = track.imgUrl,
                                 contentScale = ContentScale.Crop,
                                 contentDescription = null
@@ -169,7 +169,6 @@ private fun TrackList(
         }
     }
 }
-
 
 @Preview
 @Composable
