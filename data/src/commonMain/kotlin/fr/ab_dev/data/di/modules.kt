@@ -2,6 +2,7 @@ package fr.ab_dev.data.di
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import fr.ab_dev.data.LocalProperties
+import fr.ab_dev.data.remote.FakeTrackDayRemoteDataSource
 import fr.ab_dev.data.remote.TrackDayApi
 import fr.ab_dev.data.remote.TrackDayRemoteDataSource
 import fr.ab_dev.data.remote.TrackDayRemoteDataSourceImpl
@@ -15,9 +16,8 @@ import org.koin.dsl.module
 import repository.OrganiserRepository
 import repository.TrackRepository
 
-val tracksModule =
+val repositoriesModule =
     module {
-        // Repositories
         single<TrackRepository> {
             TrackRepositoryImpl(remoteDataSource = get())
         }
@@ -25,8 +25,10 @@ val tracksModule =
         single<OrganiserRepository> {
             OrganiserRepositoryImpl(remoteDataSource = get())
         }
+    }
 
-        // Data Sources
+val serverDataSourceModule =
+    module {
         single<TrackDayRemoteDataSource> {
             TrackDayRemoteDataSourceImpl(
                 api = get(),
@@ -51,5 +53,12 @@ val tracksModule =
 
         single<TrackDayApi> {
             get<Ktorfit>().createTrackDayApi()
+        }
+    }
+
+val fakeDataSourceModule =
+    module {
+        single<TrackDayRemoteDataSource> {
+            FakeTrackDayRemoteDataSource()
         }
     }
