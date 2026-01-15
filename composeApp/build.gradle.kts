@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -48,6 +50,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(projects.ui.core)
+            implementation(projects.di)
             implementation(projects.feature.trackList)
             implementation(projects.feature.trackDetail)
             implementation(projects.feature.navigation)
@@ -95,6 +98,25 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+buildkonfig {
+    packageName = "fr.ab_dev.trackday"
+
+    // Default: use real server
+    defaultConfigs {
+        buildConfigField(BOOLEAN, "USE_FAKE_DATA", "false")
+    }
+
+    // Flavor "server": use real API (same as default)
+    defaultConfigs("server") {
+        buildConfigField(BOOLEAN, "USE_FAKE_DATA", "false")
+    }
+
+    // Flavor "fake": use mock data
+    defaultConfigs("fake") {
+        buildConfigField(BOOLEAN, "USE_FAKE_DATA", "true")
     }
 }
 

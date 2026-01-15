@@ -27,6 +27,9 @@ coil = "3.3.0"
 koin = "4.1.1"
 mokkery = "3.1.1"
 
+# BuildKonfig
+buildkonfig = "0.15.2"
+
 # Quality tools
 detekt = "1.23.7"
 ktlint = "12.1.2"
@@ -91,6 +94,9 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Testing plugins
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
+
+# BuildKonfig
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 
 # Quality plugins
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
