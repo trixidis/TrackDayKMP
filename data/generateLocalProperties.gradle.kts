@@ -1,6 +1,6 @@
 abstract class GenerateLocalPropertiesTask : DefaultTask() {
-    @get:Input
-    abstract val baseUrl: Property<String>
+    @get:InputFile
+    abstract val localPropertiesFile: RegularFileProperty
 
     @get:Input
     abstract val packageName: Property<String>
@@ -13,13 +13,17 @@ abstract class GenerateLocalPropertiesTask : DefaultTask() {
 
     @TaskAction
     fun generate() {
+        val props = java.util.Properties()
+        localPropertiesFile.get().asFile.takeIf { it.exists() }?.inputStream()?.use { props.load(it) }
+        val baseUrl = props.getProperty("base.url", "")
+
         val file = outputDir.file("${packageName.get().replace('.', '/')}/${className.get()}.kt").get().asFile
         file.parentFile.mkdirs()
         file.writeText(
             """
             package ${packageName.get()}
             object ${className.get()} {
-                const val BASE_URL = "${baseUrl.get()}"
+                const val BASE_URL = "$baseUrl"
             }
             """.trimIndent()
         )
@@ -28,7 +32,7 @@ abstract class GenerateLocalPropertiesTask : DefaultTask() {
 
 val generateLocalProperties =
     tasks.register<GenerateLocalPropertiesTask>("generateLocalProperties") {
-        baseUrl.set(providers.gradleProperty("base.url").orElse(""))
+        localPropertiesFile.set(rootProject.file("local.properties"))
         packageName.set("fr.ab_dev.data")
         className.set("LocalProperties")
         outputDir.set(file("$buildDir/generated/localProperties"))
