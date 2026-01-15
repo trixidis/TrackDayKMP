@@ -31,11 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import model.TrackPresentation
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import trackday.feature.track_list.generated.resources.Res
 import trackday.feature.track_list.generated.resources.no_track_to_display
+import trackday.feature.track_list.generated.resources.placeholder_track
 import vm.TrackListViewModel
 
 @Composable
@@ -155,6 +157,8 @@ private fun TrackList(
                                         .weight(1f),
                                 model = track.imgUrl,
                                 contentScale = ContentScale.Crop,
+                                placeholder = painterResource(Res.drawable.placeholder_track),
+                                error = painterResource(Res.drawable.placeholder_track),
                                 contentDescription = null
                             )
                             Spacer(modifier = Modifier.height(8.dp))
