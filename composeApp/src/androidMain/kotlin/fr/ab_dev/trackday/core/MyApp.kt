@@ -1,6 +1,7 @@
 package fr.ab_dev.trackday.core
 
 import android.app.Application
+import fr.ab_dev.trackday.BuildKonfig
 import fr.ab_dev.trackday.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -11,7 +12,9 @@ class MyApp :
     KoinComponent {
     override fun onCreate() {
         super.onCreate()
-        initKoin {
+        initKoin(
+            useFakeData = BuildKonfig.USE_FAKE_DATA,
+        ) {
             androidLogger()
             androidContext(this@MyApp)
         }
